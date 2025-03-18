@@ -38,10 +38,36 @@ This guide will help you deploy a static website on a VM on Google Cloud Platfor
 sudo apt update
 sudo apt install nginx
 ```
-2. Go the the following folder where the html files needs to be uploaded ```/var/www/html```
+2. Go the the following folder where the html files needs to be uploaded ```/var/www/html``` and delete all existing files with ```rm -rf *```
 ```
 cd /var/www/html
+rm -rf *
 sudo git clone <your-repo-url> .
 ```
 3. Open the website using the Public IP and also Try opening using the Domain Name too.
 
+#### Configure NGINX for SSL and use Certbot
+1. Open nginx default config file in ```/etc/nginx/sites-enabled/default```
+2. Add your domain name in the server_name field
+```
+sudo nano /etc/nginx/sites-enabled/default
+```
+Go to Line 46 and change it from
+```
+server_name _
+```
+to 
+```
+server_name <your-domain-name>
+```
+3. Use ```Ctrl+O``` to save. Use ```Ctrl+X``` to Extit
+4. Reload Nginx
+```
+sudo service nginx reload
+```
+5. Use Certbot to Get Free SLL certificate from LetsEncrypt
+```
+sudo apt install certbot python3-certbot-nginx 
+sudo certbot --nginx -d <your-domain-name>
+```
+6. Complete the steps and your SSL will be installed
